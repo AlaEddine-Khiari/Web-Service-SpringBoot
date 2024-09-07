@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Matieres</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body{
+            background-color: beige;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Liste des Matieres</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nom Matiere</th>
+            <th>Semester</th>
+            <th>Professeur</th>
+            <th>Annee Univ</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="matiere : ${matieres}">
+            <td th:text="${matiere.nomMatiere}"></td>
+            <td th:text="${matiere.semester}"></td>
+            <td th:text="${matiere.professeur}"></td>
+            <td th:text="${matiere.anneeUniv}"></td>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Modifer Matiere</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form th:action="@{/matiere/update/{id}(id=${matiere.id})}" method="post">
+                            <div class="modal-body">
+                                <input type="hidden" id="editId" name="id">
+                                <div class="form-group">
+                                    <label for="editNomMatiere">Nom Matiere:</label>
+                                    <input type="text" class="form-control" id="editNomMatiere" name="nomMatiere" pattern="[A-Za-z ]+" title="Verifier SVP" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editSemester">Semester:</label>
+                                    <input type="number" class="form-control" id="editSemester" name="semester" min="1" max="3" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editProfesseur">Professeur:</label>
+                                    <input type="text" class="form-control" id="editProfesseur" name="professeur" pattern="[A-Za-z ]+" title="Verifier SVP" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAnneeUniv">Annee Univ:</label>
+                                    <input type="text" class="form-control" id="editAnneeUniv" name="anneeUniv" pattern="\d{4}\/\d{4}" title="Please enter in YYYY/YYYY format" placeholder="YYYY/YYYY" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                <button type="submit" class="btn btn-primary">Enregistre</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <td class="button-group">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal"
+                        th:attr="data-id=${matiere.id}, data-nom=${matiere.nomMatiere}, data-semester=${matiere.semester}, data-professeur=${matiere.professeur}, data-annee=${matiere.anneeUniv}">
+                    Modifier
+                </button>
+
+                <form th:action="@{/matiere/delete/{id}(id=${matiere.id})}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal">
+        Ajouter Matiere
+    </button>
+
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Ajouter Matiere</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{/matiere/add}" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="addNomMatiere">Nom Matiere:</label>
+                            <input type="text" class="form-control" id="addNomMatiere" name="nomMatiere" pattern="[A-Za-z ]+" title="Verifier SVP" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addSemester">Semester:</label>
+                            <input type="number" class="form-control" id="addSemester" name="semester" min="1" max="3" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addProfesseur">Professeur:</label>
+                            <input type="text" class="form-control" id="addProfesseur" name="professeur" pattern="[A-Za-z ]+" title="Verifier SVP" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addAnneeUniv">Annee Univ:</label>
+                            <input type="text" class="form-control" id="addAnneeUniv" name="anneeUniv" pattern="\d{4}\/\d{4}" title="Please enter in YYYY/YYYY format" placeholder="YYYY/YYYY" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery, Popper.js, Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var modal = $(this);
+            modal.find('#editId').val(id);
+            modal.find('#editNomMatiere').val(button.data('nom'));
+            modal.find('#editSemester').val(button.data('semester'));
+            modal.find('#editProfesseur').val(button.data('professeur'));
+            modal.find('#editAnneeUniv').val(button.data('annee'));
+        });
+    });
+</script>
+</body>
+</html>

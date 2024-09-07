@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    .dashboard {
+      margin-top: 30px;
+    }
+    .dashboard h2 {
+      margin-bottom: 20px;
+    }
+    .user-info {
+      margin-bottom: 15px;
+    }
+    .logout-btn {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="dashboard">
+    <h2>Welcome to User Dashboard</h2>
+    <div class="user-info">
+      <p>Logged as: <span sec:authentication="name"></span></p>
+      <p>Has role: <span sec:authentication="authorities"></span></p>
+    </div>
+    <div class="links">
+      <p><a th:href="@{/etudiant/all}" class="btn btn-primary">Etudiant Page</a></p>
+      <p><a th:href="@{/matiere/all}" class="btn btn-success">Matiere Page</a></p>
+    </div>
+    <div class="logout-btn">
+      <p><a th:href="@{/}" class="btn btn-secondary">Home</a></p>
+      <p><a th:href="@{/logout}" class="btn btn-danger">Log out</a></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
